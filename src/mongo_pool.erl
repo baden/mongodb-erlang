@@ -33,8 +33,8 @@ start_link(Name, Size, Sup) ->
 -spec get(atom() | pid()) -> mongo_connection:connection().
 get(Pool) ->
 	case gen_server:call(Pool, get, infinity) of
-		{ok, Connection} -> Connection;
-		{error, Reason} -> erlang:exit(Reason)
+		{error, Reason} -> erlang:exit(Reason);
+		Other -> Other
 	end.
 
 %% @hidden
@@ -54,7 +54,7 @@ handle_call(get, _From, #state{connections = Connections} = State) ->
 			case supervisor:start_child(State#state.supervisor, []) of
 				{ok, Connection} ->
 					Monitor = erlang:monitor(process, Connection),
-					{reply, {ok, Connection}, State#state{
+					{reply, {new, Connection}, State#state{
 						connections = array:set(Index, Connection, Connections),
 						monitors = orddict:store(Monitor, Index, State#state.monitors)
 					}};
