@@ -21,6 +21,10 @@
 	 find/6
 	]).
 
+-export([
+     ensure_index/3
+	]).
+
 -include("mongo_protocol.hrl").
 
 -define(CONNECT_TIMEOUT, 1000).
@@ -37,7 +41,7 @@ child_spec(PoolName, PoolSize, Server, Port, Db, MaxOverflow) ->
      [?MODULE]}.
 
 
-start_link(PoolName, PoolSize, Server, Port, Db, MaxOverflow) -> 
+start_link(PoolName, PoolSize, Server, Port, Db, MaxOverflow) ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, [PoolName, PoolSize, Server, Port, Db, MaxOverflow]).
 
 init([PoolName, PoolSize, Server, Port, Db, MaxOverflow]) ->
@@ -132,6 +136,10 @@ find(Pool, Coll, Selector, Projector, Skip, BatchSize) ->
 		batchsize = BatchSize
 	}).
 
+%% @doc Create index on collection according to given spec.
+-spec ensure_index(pid(), collection(), bson:document()) -> ok.
+ensure_index(Pool, Coll, IndexSpec) ->
+	request(Pool, #ensure_index{collection = Coll, index_spec = IndexSpec}).
 
 request(Pool, Request) ->  %request to worker
     Timeout = case application:get_env(mc_worker_call_timeout) of
