@@ -1,48 +1,30 @@
-PROJECT = mongodb
+# See LICENSE for licensing information.
 
-DIALYZER = dialyzer
-REBAR = $(shell which rebar || echo ./rebar)
+PROJECT = mongodb-erlang
 
-all: app
+# Options.
 
-# Application.
+ERLC_OPTS ?= -Werror +debug_info
 
-deps:
-	@$(REBAR) get-deps
+# Dependencies error in erlang.mk?
+#CT_OPTS += -pa test -erl_args -config test/test.config -pa deps/mongodb/deps/*/ebin
+#PLT_APPS = crypto public_key ssl
 
-app: deps
-	@$(REBAR) compile
+# Dependencies.
 
-clean:
-	@$(REBAR) clean
-	rm -f test/*.beam
-	rm -f erl_crash.dump
+DEPS = bson poolboy
+dep_bson = git https://github.com/soundrop/bson-erlang.git master
+dep_poolboy = git https://github.com/ceshannon/poolboy.git master
 
-docs: clean-docs
-	@$(REBAR) doc skip_deps=true
+# TEST_DEPS = ct_helper meck
+# TEST_DEPS = ct_helper
+# dep_ct_helper = git https://github.com/extend/ct_helper.git master
+# dep_meck = git git://github.com/eproxus/meck.git 0.8.2
 
-clean-docs:
-	rm -f doc/*.css
-	rm -f doc/*.html
-	rm -f doc/*.png
-	rm -f doc/edoc-info
+# Standard targets.
 
-# Tests.
-tests: clean app eunit ct
+include erlang.mk
 
-eunit:
-	@$(REBAR) eunit skip_deps=true
+# Also dialyze the tests.
 
-ct:
-	@$(REBAR) ct skip_deps=true
-
-# Dialyzer.
-build-plt:
-	@$(DIALYZER) --build_plt --output_plt .$(PROJECT).plt \
-		--apps erts kernel stdlib sasl inets crypto public_key ssl mnesia syntax_tools
-
-dialyze:
-	@$(DIALYZER) --src src --plt .$(PROJECT).plt --no_native \
-		-Werror_handling -Wrace_conditions -Wunmatched_returns
-
-.PHONY: deps
+# DIALYZER_OPTS += --src -r test
