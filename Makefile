@@ -1,6 +1,6 @@
 # See LICENSE for licensing information.
 
-PROJECT = mongodb-erlang
+PROJECT = mongodb
 
 # Options.
 

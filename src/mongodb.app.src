@@ -2,6 +2,7 @@
 {application, mongodb, [
 	{description, "Client interface to MongoDB, also known as the driver. See www.mongodb.org"},
 	{vsn, git},
+	{modules, []},
 	{registered, []},
 	{applications, [kernel, stdlib, bson]},
 	{mod, {mongo_app, []}}
