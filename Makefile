@@ -13,7 +13,7 @@ ERLC_OPTS ?= -Werror +debug_info
 # Dependencies.
 
 DEPS = bson poolboy
-dep_bson = git https://github.com/soundrop/bson-erlang.git master
+dep_bson = git https://github.com/baden/bson-erlang.git master
 dep_poolboy = git https://github.com/ceshannon/poolboy.git master
 
 # TEST_DEPS = ct_helper meck
