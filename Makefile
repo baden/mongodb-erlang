@@ -23,6 +23,9 @@ dep_poolboy = git https://github.com/ceshannon/poolboy.git master
 
 # Standard targets.
 
+# TODO:
+# {edoc_opts, [{index_columns, 1}, {sort_functions, false}, {preprocess, true}]}.
+
 include erlang.mk
 
 # Also dialyze the tests.
