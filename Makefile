@@ -14,7 +14,7 @@ ERLC_OPTS ?= -Werror +debug_info
 
 DEPS = bson poolboy
 dep_bson = git https://github.com/baden/bson-erlang.git v0.1.3-patch
-dep_poolboy = git https://github.com/ceshannon/poolboy.git master
+dep_poolboy = git https://github.com/devinus/poolboy.git 1.5.1
 
 # TEST_DEPS = ct_helper meck
 # TEST_DEPS = ct_helper
