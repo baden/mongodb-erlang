@@ -31,3 +31,5 @@ include erlang.mk
 # Also dialyze the tests.
 
 # DIALYZER_OPTS += --src -r test
+update-erlang.mk:
+	curl -O https://raw.githubusercontent.com/ninenines/erlang.mk/master/erlang.mk
